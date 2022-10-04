@@ -54,11 +54,6 @@ public class DataExecution implements Serializable {
 
         transDS = transDS.withColumnRenamed("fDate", "date");
 
-      /*  //summary of spendings by days of week
-        Dataset<Row> dowTrans = transDS.withColumn("day_of_week", date_format(col("date"), "EEEE"))
-                .withColumn("dow", dayofweek(col("date")))
-                .groupBy("customer_id", "day_of_week", "dow").agg(sum("total").as("total_spend")).orderBy("customer_id", "dow").drop("dow"); */
-
         //process Customer Data
         custDS = processCustData(custDS, transDS);
         //process Transactions Data
