@@ -9,7 +9,7 @@ Unit Test Class: DataExecutionTest.java
 
 Output File Path: \src\main\output
 
-Ouput Files:1.customer.csv
+Output Files:1.customer.csv
 			2.transactions.csv
 			3.dayOfWeek_Spendings.csv
 			4.linkage_Customer.csv
