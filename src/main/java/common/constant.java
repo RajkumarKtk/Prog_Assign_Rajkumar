@@ -2,6 +2,15 @@ package common;
 
 public class constant {
 
+    public static final String CUSDATADIRPATH = "src/main/resources/customer.csv";
+    public static final String TRANSDATADIRPATH = "src/main/resources/transactions.csv";
+    public static final String DATADIRPATH = "src/main/resources/data.csv";
+
+    public static final String TRANSOUTPUTDIRPATH = "src/main/output/transactions.csv";
+    public static final String CUSOUTPUTDIRPATH = "src/main/output/customer.csv";
+    public static final String DOWOUTPUTDIRPATH = "src/main/output/dayOfWeek_Spendings.csv";
+
+    public static final String LINKCUSTOUTPUTDIRPATH = "src/main/output/linkage_Customer.csv";
     public static final String PERSON_ID = "person_id";
     public static final String POSTCODE = "postcode";
     public static final String STATE = "state";

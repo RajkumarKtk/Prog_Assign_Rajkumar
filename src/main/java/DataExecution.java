@@ -13,6 +13,7 @@ import org.apache.spark.sql.*;
 import org.apache.spark.sql.expressions.Window;
 import org.apache.spark.sql.expressions.WindowSpec;
 
+import static common.constant.*;
 import static org.apache.spark.sql.functions.*;
 
 public class DataExecution implements Serializable {
@@ -64,9 +65,9 @@ public class DataExecution implements Serializable {
         transDS = processTransData(transDS);
 
         //write csv output File under 'output' directory
-        Path transPath = new Path("src/main/output/transactions.csv");
-        Path cusPath = new Path("src/main/output/customer.csv");
-        Path dowPath = new Path("src/main/output/dayOfWeek_Spendings.csv");
+        Path transPath = new Path(TRANSOUTPUTDIRPATH);
+        Path cusPath = new Path(CUSOUTPUTDIRPATH);
+        Path dowPath = new Path(DOWOUTPUTDIRPATH);
         writeCsvFile(transPath, transDS, ses);
         writeCsvFile(cusPath, custDS, ses);
         writeCsvFile(dowPath, dowTrans, ses);
@@ -78,7 +79,7 @@ public class DataExecution implements Serializable {
         linkCustDS = linkCustDS.join(dataDS,custDS.col("state").equalTo(dataDS.col("data"))).withColumn("state",col("id")).drop("id","data");
         linkCustDS = linkCustDS.join(dataDS,custDS.col("gender").equalTo(dataDS.col("data"))).withColumn("gender",col("id")).drop("id","data");
 
-        Path linkPath = new Path("src/main/output/linkage_customer.csv");
+        Path linkPath = new Path(LINKCUSTOUTPUTDIRPATH);
         writeCsvFile(linkPath, linkCustDS, ses);
     }
 
