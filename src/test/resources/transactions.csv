@@ -1,0 +1,6 @@
+﻿CustomerID,Product line,Unit price,Quantity,Tax 5%,Total,Date,Time,Payment,cogs,gross margin percentage,gross income,Rating
+750-67-8428,Fashion accessories,36.85,5,9.2125,193.4625,1/26/2019,18:53,Cash,184.25,4.761904762,9.2125,9.2
+226-31-3081,Electronic accessories,83.08,1,4.154,87.234,1/23/2019,17:16,Ewallet,83.08,4.761904762,4.154,6.4
+226-31-3081,Fashion accessories,60.41,8,24.164,507.444,2/7/2019,12:23,Ewallet,483.28,4.761904762,24.164,9.6
+631-41-3108,Fashion accessories,99.82,2,9.982,209.622,1/2/2019,18:09,Credit card,199.64,4.761904762,9.982,6.7
+631-41-3108,Electronic accessories,57.49,4,11.498,241.458,3/15/2019,11:57,Cash,229.96,4.761904762,11.498,6.6

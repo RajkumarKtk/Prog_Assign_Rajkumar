@@ -1,7 +1,4 @@
 import org.apache.spark.sql.*;
-import org.junit.Before;
-
-import java.io.IOException;
 import java.util.List;
 
 import static org.apache.spark.sql.functions.*;
@@ -20,7 +17,7 @@ class DataExecutionTest {
 
         Dataset<Row> transData = readCSVFile.readTransactionDS(ses, TransDataDirPath).dropDuplicates();
 
-        Row cusExpectedData = RowFactory.create(new Object[]{"750-67-8428", 2000, "NSW", "F", 19, "credit", true});
+        Row cusExpectedData = RowFactory.create("750-67-8428", 2000, "NSW", "F", 19, "credit", true);
 
         assertEquals(cusExpectedData, cusRows.get(0));
         assertEquals(5, transData.count());
@@ -28,7 +25,7 @@ class DataExecutionTest {
         Dataset<Row> processCustDS = DataExecution.getInstance().processCustData(custData, transData);
         List<Row> processCusRows = processCustDS.collectAsList();
 
-        Row processCusData = RowFactory.create(new Object[]{"226-31-3081", "******", "NSW", "F", "[20-24]", "credit", "false"});
+        Row processCusData = RowFactory.create("226-31-3081", "******", "NSW", "F", "[20-24]", "credit", "false");
         assertEquals(processCusData, processCusRows.get(0));
 
         transData = transData.withColumn("fDate", functions.when(to_date(col("date"), "yyyy-MM-dd").isNotNull(),

@@ -78,8 +78,6 @@ public class DataExecution implements Serializable {
         linkCustDS = linkCustDS.join(dataDS,custDS.col("state").equalTo(dataDS.col("data"))).withColumn("state",col("id")).drop("id","data");
         linkCustDS = linkCustDS.join(dataDS,custDS.col("gender").equalTo(dataDS.col("data"))).withColumn("gender",col("id")).drop("id","data");
 
-       // System.out.println("after: " + custDS.count());
-        //custDS.show();
         Path linkPath = new Path("src/main/output/linkage_customer.csv");
         writeCsvFile(linkPath, linkCustDS, ses);
     }

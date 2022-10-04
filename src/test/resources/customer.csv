@@ -1,0 +1,4 @@
+﻿person_id,postcode,state,gender,age,account_type,loyal_customer
+750-67-8428,2000,NSW,F,19,credit,TRUE
+226-31-3081,2000,NSW,F,22,credit,TRUE
+631-41-3108,2000,NSW,M,32,credit,TRUE
