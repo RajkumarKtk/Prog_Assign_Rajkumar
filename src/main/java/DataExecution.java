@@ -19,7 +19,7 @@ import static org.apache.spark.sql.functions.*;
 public class DataExecution implements Serializable {
 
     private final static DataExecution DATA_EXECUTION = new DataExecution();
-
+    private static Dataset<Row> dowTrans;
     private DataExecution() {
 
     }
@@ -54,15 +54,15 @@ public class DataExecution implements Serializable {
 
         transDS = transDS.withColumnRenamed("fDate", "date");
 
-        //summary of spendings by days of week
+      /*  //summary of spendings by days of week
         Dataset<Row> dowTrans = transDS.withColumn("day_of_week", date_format(col("date"), "EEEE"))
                 .withColumn("dow", dayofweek(col("date")))
-                .groupBy("customer_id", "day_of_week", "dow").agg(sum("total").as("total_spend")).orderBy("customer_id", "dow").drop("dow");
+                .groupBy("customer_id", "day_of_week", "dow").agg(sum("total").as("total_spend")).orderBy("customer_id", "dow").drop("dow"); */
 
         //process Customer Data
         custDS = processCustData(custDS, transDS);
         //process Transactions Data
-        transDS = processTransData(transDS);
+        transDS = processTransData(transDS,custDS);
 
         //write csv output File under 'output' directory
         Path transPath = new Path(TRANSOUTPUTDIRPATH);
@@ -95,9 +95,8 @@ public class DataExecution implements Serializable {
         custDS = custDS.withColumn("bAge", col("age").$minus(col("age").$percent(5)))
                 .withColumn("age", concat(lit("["), col("bAge"), lit("-"), col("bAge").$plus(4), lit("]"))).drop(col("bAge"));
 
-
         //correct or add loyalty flag
-        //filter out customers that did not transact and transactions of customers that do not present in the customer transactions of customers that do not present in the customer
+        //filter out customers that did not transact at all
         Dataset<Row> cusTransDS = transDS.groupBy(col("customer_id"), month(col("date")).as("month"), year(col("date")).as("year"))
                 .agg(sum(col("total")).as("spend"));
         cusTransDS = cusTransDS.withColumn("loyal_cust", when(col("spend").gt(1000), "true").otherwise("false"))
@@ -110,12 +109,21 @@ public class DataExecution implements Serializable {
 
         custDS = custDS.join(broadcast(cusTransDS), custDS.col("person_id").equalTo(cusTransDS.col("customer_id")));
         custDS = custDS.withColumn("loyal_customer", custDS.col("loyal")).drop("customer_id", "loyal").dropDuplicates();
-
         return custDS.select("person_id", "postcode", "state", "gender", "age", "account_type", "loyal_customer").orderBy("person_id");
 
     }
 
-    public Dataset<Row> processTransData(Dataset<Row> transDS) {
+    public Dataset<Row> processTransData(Dataset<Row> transDS,Dataset<Row> custDS) {
+
+        custDS= custDS.select("person_id");
+        // filter out transactions of customers that do not present in the customer transactions of customers that do not present in the customer
+        transDS = transDS.join(broadcast(custDS),transDS.col("customer_id").equalTo(custDS.col("person_id"))).drop(custDS.col("person_id"));
+
+        //summary of spendings by days of week
+        dowTrans = transDS.withColumn("day_of_week", date_format(col("date"), "EEEE"))
+                .withColumn("dow", dayofweek(col("date")))
+                .groupBy("customer_id", "day_of_week", "dow").agg(sum("total").as("total_spend")).orderBy("customer_id", "dow").drop("dow");
+
         //transactions happening on Wednesdays
         transDS = transDS.withColumn("day_of_week", date_format(col("date"), "EEEE"))
                 .withColumn("total_spend", when(col("total").geq(100).and(col("day_of_week").equalTo(lit("Wednesday"))), 99)

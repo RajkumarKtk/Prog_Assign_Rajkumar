@@ -38,7 +38,7 @@ class DataExecutionTest {
                         to_date(col("Date"), "yyyy MMMM dd"))
                 .otherwise("Unknown")).drop(col("date"));
         transData = transData.withColumnRenamed("fDate", "date");
-        Dataset<Row> processTransDS = DataExecution.getInstance().processTransData(transData);
+        Dataset<Row> processTransDS = DataExecution.getInstance().processTransData(transData,custData);
         assertEquals(5, processTransDS.count());
     }
 
