@@ -21,9 +21,9 @@ public class readCSVFile {
                 DataTypes.createStructField(LOYAL_CUSTOMER, DataTypes.BooleanType, true)
         });
 
-        Dataset<Row> custDataSet = ss.read().schema(custSchema).option("header","true").option("nullValue",null).option("ignoreLeadingWhiteSpace","true")
+        //create customer data Dataset
+        return ss.read().schema(custSchema).option("header","true").option("nullValue",null).option("ignoreLeadingWhiteSpace","true")
                 .option("ignoreTrailingWhiteSpace","true").csv(custdataPaths);
-        return custDataSet;
     }
 
     public static Dataset<Row> readTransactionDS(SparkSession ss, String transdataPaths){
@@ -38,13 +38,24 @@ public class readCSVFile {
                 DataTypes.createStructField(TIME, DataTypes.StringType, true),
                 DataTypes.createStructField(PAYMENT, DataTypes.StringType, true),
                 DataTypes.createStructField(COGS, DataTypes.FloatType, true),
-                DataTypes.createStructField(GROSS_MARGIN_PERCENTAGE, DataTypes.FloatType, true),
+                DataTypes.createStructField(GROSS_MARGIN_PERCENTAGE, DataTypes.DoubleType, true),
                 DataTypes.createStructField(GROSS_INCOME, DataTypes.FloatType, true),
                 DataTypes.createStructField(RATING, DataTypes.FloatType, true)
         });
-          Dataset<Row> transDataSet = ss.read().schema(transSchema).option("header","true").option("nullValue",null).option("ignoreLeadingWhiteSpace","true")
-                .option("ignoreTrailingWhiteSpace","true").csv(transdataPaths);
-        return transDataSet;
+        //create transactions data Dataset
+        return ss.read().schema(transSchema).option("header","true").option("nullValue",null).option("ignoreLeadingWhiteSpace","true")
+              .option("ignoreTrailingWhiteSpace","true").csv(transdataPaths);
+    }
+
+    public static Dataset<Row> readDataDS(SparkSession ss, String dataPaths){
+        StructType daraSchema = DataTypes.createStructType(new StructField[] {
+                DataTypes.createStructField(DATA,  DataTypes.StringType, true),
+                DataTypes.createStructField(ID, DataTypes.StringType, true)
+        });
+
+        //create customer data Dataset
+        return ss.read().schema(daraSchema).option("header","true").option("nullValue",null).option("ignoreLeadingWhiteSpace","true")
+                .option("ignoreTrailingWhiteSpace","true").csv(dataPaths);
     }
 
 }

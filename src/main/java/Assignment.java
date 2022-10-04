@@ -7,10 +7,11 @@ public class Assignment {                               //Assignment class is th
 
         //Input file path for customer.csv and transactions.csv
         String cusDataDirPath = "src/main/resources/customer.csv";
-        String TransDataDirPath = "src/main/resources/transactions.csv";
+        String transDataDirPath = "src/main/resources/transactions.csv";
+        String dataDirPath = "src/main/resources/data.csv";
 
         //Data execution process
-        DataExecution.getInstance().execute(cusDataDirPath,TransDataDirPath);
+        DataExecution.getInstance().execute(cusDataDirPath,transDataDirPath,dataDirPath);
     }
 
 

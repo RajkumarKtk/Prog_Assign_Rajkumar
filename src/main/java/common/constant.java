@@ -22,6 +22,7 @@ public class constant {
     public static final String GROSS_MARGIN_PERCENTAGE = "gross_margin_percent";
     public static final String GROSS_INCOME = "gross_income";
     public static final String RATING = "rating";
-
+    public static final String DATA = "data";
+    public static final String ID = "id";
 
 }
