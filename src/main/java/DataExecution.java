@@ -32,7 +32,7 @@ public class DataExecution implements Serializable {
 
         //Initializing Spark Session
         SparkSession ses = SparkSession.builder().master("local").getOrCreate();
-        ses.conf().set("spark.sql.shuffle.partitions", 300);
+        ses.conf().set("spark.sql.shuffle.partitions", 300);                //increased the partitions to 300 to increase the performance
         ses.conf().set("spark.default.parallelism", 300);
 
         //Read Customer.csv file into Dataset
@@ -116,6 +116,7 @@ public class DataExecution implements Serializable {
     }
 
     public Dataset<Row> processTransData(Dataset<Row> transDS) {
+        //transactions happening on Wednesdays
         transDS = transDS.withColumn("day_of_week", date_format(col("date"), "EEEE"))
                 .withColumn("total_spend", when(col("total").geq(100).and(col("day_of_week").equalTo(lit("Wednesday"))), 99)
                         .otherwise(col("total")))
